@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/static/css/semantic/semantic.min.js"></script>
+    <meta id="cur-page" data-page="0">
+    <title>DC추첨기</title>
+</head>
+
+<body>
+    <div class="ui container" id="main-container">
+        <h1>로그 보기</h1>
+        <table class="ui single line table">
+            <thead>
+                <tr>
+                    <th>로그 번호</th>
+                    <th>당첨자</th>
+                    <th>갤러리 ID</th>
+                    <th>글 번호</th>
+                </tr>
+            </thead>
+            <tbody id="log-table">
+            </tbody>
+        </table>
+        <div class="ui fluid vertical animated button" onclick="checkPageAndGetLog(this);" tabindex="0">
+            <div class="hidden content"><i class="angle down icon"></i></div>
+            <div class="visible content">더보기</div>
+        </div>
+    </div>
+    <script src="/static/js/view-log.js"></script>
+</body>
+
+</html>

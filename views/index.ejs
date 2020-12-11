@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/static/css/semantic/semantic.min.js"></script>
+    <script src="/static/js/draw.js"></script>
+    <title>DC추첨기</title>
+    <meta id="call-id" data-token="">
+</head>
+
+<body>
+    <div class="ui container" id="main-container">
+        <h1>디시인사이드 추첨기</h1>
+        <div class="ui action fluid labeled input">
+            <div class="ui label">https://</div>
+            <input type="text" id="url-input" placeholder="gall.dcinside.com/">
+            <div class="ui animated fade button" onclick="searchArticle(this);" tabindex="0">
+                <div class="visible content">Search</div>
+                <div class="hidden content"><i class="search icon"></i></div>
+            </div>
+        </div>
+        <div class="two ui buttons">
+            <button class="ui button" onclick="location.href = '/view_log'">로그 보기</button>
+            <button class="ui button" onclick="viewRecentWinner();">최근 당첨자 보기</button>
+        </div>
+        <div class="ui segment" id="recent-winner-segment" style="display: none;">
+            <h2>최근 당첨자</h2>
+            <div class="ui divider"></div>
+            <div class="ui teal label" style="display: none;" data-type="template_recent" data-nick="" data-id="">
+                <div class="detail"></div>
+            </div>
+        </div>
+        <div class="ui segment" id="include-segment">
+            <h2>추첨 리스트</h2>
+            <div class="ui divider"></div>
+            <div class="ui teal label" style="display: none;" data-type="template" data-nick="" data-id="">
+                <div class="detail"></div>
+                <i class="delete icon" onclick="toggleExclude(this);"></i>
+            </div>
+        </div>
+        <div class="ui segment" id="exclude-segment">
+            <h2>제외 리스트</h2>
+            <div class="ui divider"></div>
+        </div>
+        <div class="ui form" id="draw-form">
+            <div class="field">
+                <label>추첨인원</label>
+                <input type="number" id="peoples" value="1">
+            </div>
+            <div class="ui center aligned grid">
+                <div class="ui disabled animated fade button" onclick="clickDraw(this);" tabindex="0">
+                    <div class="visible content">추첨하기</div>
+                    <div class="hidden content">GO!</div>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment" id="winner-segment" style="display: none;">
+            <h2>당첨 리스트</h2>
+            <div class="ui divider"></div>
+        </div>
+    </div>
+</body>
+
+</html>

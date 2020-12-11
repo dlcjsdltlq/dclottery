@@ -1,0 +1,17 @@
+.ui {
+    margin-top: 3em;
+}
+
+.ui > h1 {
+    text-align: center;
+    font-size: 3em;
+    font-weight: lighter;
+}
+
+#draw-form > .grid {
+    margin: 1em 0 0 1em;
+}
+
+.two.ui.buttons {
+    margin-top: 10px;
+}

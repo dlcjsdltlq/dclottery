@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/static/css/semantic/semantic.min.js"></script>
+    <title>DC추첨기</title>
+</head>
+
+<body>
+    <div class="ui container" id="main-container">
+        <h1>로그 보기</h1>
+        <p id="log-no"></p>
+        <p id="gall-id"></p>
+        <p id="article-no"></p>
+        <p id="entries"></p>
+        <p id="include-entries"></p>
+        <p id="exclude-entries"></p>
+        <p id="num-of-entries"></p>
+        <p id="winners"></p>
+        <p id="time"></p>
+    </div>
+    <script>
+        const arrayToStr = (arr) => {
+            let str = '';
+            for(const element of arr) {
+                str += `${element[0]}(${element[1]}), `;
+            }
+            return str.substr(0, str.length - 2);
+        };
+
+        const main = () => {
+            const status = JSON.parse('<%- JSON.stringify(status); %>');
+            const res = JSON.parse('<%- JSON.stringify(result); %>');
+            if (!status) { alert('오류가 발생하였습니다.'); return; }
+            document.querySelector('#log-no').textContent = '로그 번호: ' + res.logNo;
+            document.querySelector('#gall-id').textContent = '갤러리 ID: ' + res.gallId;
+            document.querySelector('#article-no').textContent = '글 번호: ' + res.articleNo;
+            document.querySelector('#entries').textContent = '총 참가자: ' + arrayToStr(res.entries);
+            document.querySelector('#include-entries').textContent = '참가자: ' + arrayToStr(res.includeEntries);
+            document.querySelector('#exclude-entries').textContent = '제외 참가자: ' + (res.excludeEntries.length === 0 ? '없음' : arrayToStr(res.excludeEntries));
+            document.querySelector('#num-of-entries').textContent = '추첨 인원: ' + res.numOfEntries;
+            document.querySelector('#winners').textContent = '당첨자: ' + arrayToStr(res.winners);
+            document.querySelector('#time').textContent = '추첨 시간: ' + res.createDate;
+        };
+        main();
+    </script>
+</body>
+
+</html>
