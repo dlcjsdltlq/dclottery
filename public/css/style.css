@@ -15,3 +15,8 @@
 .two.ui.buttons {
     margin-top: 10px;
 }
+
+.ui.pointing {
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+}

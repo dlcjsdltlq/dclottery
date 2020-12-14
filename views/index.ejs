@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script data-ad-client="ca-pub-1064448501438717" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/css/semantic/semantic.min.js"></script>
     <script src="/static/js/draw.js"></script>
@@ -32,17 +33,20 @@
         <div class="ui segment" id="recent-winner-segment" style="display: none;">
             <h2>최근 당첨자</h2>
             <div class="ui divider"></div>
-            <div class="ui teal label" style="display: none;" data-type="template_recent" data-nick="" data-id="">
+            <div class="ui green large label" style="display: none;" data-type="template_recent">
                 <div class="detail"></div>
             </div>
+        </div>
+        <div class="ui pointing below red basic label">
+            참가자 라벨을 누르면 추가하거나 제외할 수 있습니다
+            <i class="delete icon" onclick="this.parentNode.remove();"></i>
         </div>
         <div class="ui segment" id="include-segment">
             <h2>추첨 리스트</h2>
             <div class="ui divider"></div>
-            <div class="ui teal large label" style="display: none;" data-type="template" data-nick="" data-id="">
+            <a class="ui teal large label" style="display: none;" onclick="toggleExclude(this);" data-type="template" data-nick="" data-id="">
                 <div class="detail"></div>
-                <i class="delete icon" onclick="toggleExclude(this);"></i>
-            </div>
+            </a>
         </div>
         <div class="ui segment" id="exclude-segment">
             <h2>제외 리스트</h2>

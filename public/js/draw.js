@@ -31,10 +31,10 @@ const ERROR_LIST = {
     ERROR_CLIENT: {
         msg: '오류가 발생하였습니다.'
     }
-};
+}; 
 
 const resetAll = () => {
-    const entryElements = document.querySelectorAll('div[data-type="show"]');
+    const entryElements = document.querySelectorAll('a[data-type="show"]');
     for (const entryElement of entryElements) {
         entryElements[i].parentNode.removeChild(entryElement);
     }
@@ -60,7 +60,7 @@ const searchArticle = async (element) => {
         document.querySelector('#call-id').setAttribute('data-token', callId);
         const includeSegment = document.querySelector('#include-segment');
         for (const entryInfo of entries) {
-            let tempNode = document.querySelector('div[data-type="template"]').cloneNode(true);
+            let tempNode = document.querySelector('a[data-type="template"]').cloneNode(true);
             tempNode.setAttribute("data-nick", entryInfo[0]);
             tempNode.setAttribute("data-id", entryInfo[1]);
             tempNode.querySelector('div.detail').textContent = entryInfo[1];
@@ -78,7 +78,7 @@ const searchArticle = async (element) => {
 };
 
 const toggleExclude = (element) => {
-    const targetElement = element.parentNode;
+    const targetElement = element;
     targetElement.parentElement.removeChild(targetElement);
     if (targetElement.classList.contains('teal')) {
         targetElement.classList.remove('teal');
@@ -95,8 +95,8 @@ const clickDraw = async (element) => {
     element.classList.add('loading');
     const numOfEntriesElement = document.querySelector('#peoples');
     const numOfEntries = numOfEntriesElement.value;
-    const includeEntriesElements = document.querySelectorAll('#include-segment > div[data-type="show"]');
-    const excludeEntriesElements = document.querySelectorAll('#exclude-segment > div[data-type="show"]');
+    const includeEntriesElements = document.querySelectorAll('#include-segment > a[data-type="show"]');
+    const excludeEntriesElements = document.querySelectorAll('#exclude-segment > a[data-type="show"]');
     if (numOfEntries <= 0 || includeEntriesElements.length < 1) {
         alert('최소 1명 이상의 사람 수가 필요합니다.');
         numOfEntriesElement.value = 1;
@@ -128,14 +128,14 @@ const clickDraw = async (element) => {
         const winners = res.data.result;
         const winnerSegment = document.querySelector('#winner-segment');
         for (const winner of winners) {
-            let winnerBox = document.querySelector(`div[data-id="${winner[1]}"]`).cloneNode(true);
+            let winnerBox = document.querySelector(`a[data-id="${winner[1]}"]`).cloneNode(true);
             winnerBox.classList.remove('teal');
             winnerBox.classList.add('blue');
             winnerSegment.appendChild(winnerBox);
             document.querySelector('#call-id').setAttribute('data-token', '');
         }
-        const allEntryElements = document.querySelectorAll('div[data-type="show"] > i');
-        for (const entryElement of allEntryElements) entryElement.remove();
+        const allEntryElements = document.querySelectorAll('a[data-type="show"]');
+        for (const entryElement of allEntryElements) entryElement.setAttribute('onclick', '');
         showWinner();
     } catch (e) {
         if (!(e in ERROR_LIST)) e = 'ERROR_CLIENT';
@@ -153,7 +153,7 @@ const showWinner = () => {
 
 const viewRecentWinner = async () => {
     const recentWinnerSegment = document.querySelector('#recent-winner-segment');
-    const recentWinnerElements = recentWinnerSegment.querySelectorAll('div[data-type="show_winner"]');
+    const recentWinnerElements = recentWinnerSegment.querySelectorAll('a[data-type="show_winner"]');
     if (recentWinnerElements) {
         for (const recentWinnerElement of recentWinnerElements) {
             recentWinnerSegment.removeChild(recentWinnerElement);
@@ -171,14 +171,11 @@ const viewRecentWinner = async () => {
             const recentWinners = res.data.result;
             if (!recentWinners) return;
             for (const userInfo of recentWinners) {
-                let tempNode = document.querySelector('div[data-type="template"]').cloneNode(true);
+                let tempNode = document.querySelector('div[data-type="template_recent"]').cloneNode(true);
                 tempNode.querySelector('div.detail').textContent = userInfo[1];
                 tempNode.insertBefore(document.createTextNode(userInfo[0]), tempNode.querySelector('div'));
                 tempNode.style = 'margin: 1px;';
                 tempNode.setAttribute('data-type', 'show_winner');
-                tempNode.querySelector('i').remove();
-                tempNode.classList.remove('teal');
-                tempNode.classList.add('green');
                 recentWinnerSegment.appendChild(tempNode);
             }
         } catch (e) {
