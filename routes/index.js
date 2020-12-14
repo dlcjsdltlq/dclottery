@@ -11,6 +11,7 @@ router.get('/view_log', (req, res) => {
     res.render('view-log');
 });
 router.get('/view_log/:logNo', draw.getLog);
+router.get('/robots.txt', (req, res) => res.send('<pre>User-Agent: *\nDisallow: /\nAllow: /$<pre>'));
 
 router.get('/api/getlastlogno', draw.getLastLogNo);
 
