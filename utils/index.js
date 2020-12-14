@@ -22,15 +22,20 @@ const removeOverlap = (arr) => {
         itemsFound[stringified] = true;
     }
     return uniques;
-}
+};
 
 const isArrayEqual  = (a, b) => {
     return JSON.stringify(a) === JSON.stringify(b);
-}
+};
+
+const sleep = (t) => {
+    return new Promise(resolve=>setTimeout(resolve,t));
+};
 
 module.exports = {
     randInt,
     shuffle,
     removeOverlap,
-    isArrayEqual
+    isArrayEqual,
+    sleep
 };

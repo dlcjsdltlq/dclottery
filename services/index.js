@@ -40,14 +40,20 @@ const getComment = async (gallId, articleNo) => {
         },
         json: true
     };
-    const commentBody = await new Promise((resolve, reject) => request.post(getCommentOptions, (error, response, body) => {resolve(body)}));
     const comments = [];
-    for (const comment of commentBody.comments) {
-        let ip = comment.ip;
-        let name = comment.name;
-        let ipOrId = ip ? ip : comment.user_id;
-        if (name === "댓글돌이") continue;
-        comments.push([name, ipOrId]);
+    let totalPages = -1;
+    while (totalPages) {
+        const commentBody = await new Promise((resolve, reject) => request.post(getCommentOptions, (error, response, body) => {resolve(body)}));
+        if (totalPages === -1) totalPages = Math.ceil(commentBody.total_cnt / 106);
+        getCommentOptions.form.comment_page = totalPages--;
+        for (const comment of commentBody.comments) {
+            let ip = comment.ip;
+            let name = comment.name;
+            let ipOrId = ip ? ip : comment.user_id;
+            if (name === "댓글돌이") continue;
+            comments.push([name, ipOrId]);
+        }
+        utils.sleep(800);
     }
     return utils.removeOverlap(comments);
 }
