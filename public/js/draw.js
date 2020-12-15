@@ -1,11 +1,3 @@
-document.onkeydown = (e) => {
-    e = e || window.event;
-    switch (e.which || e.keyCode) {
-        case 13:
-        searchArticle();
-    }
-};
-
 const ERROR_LIST = { 
     URL_ERROR: {
         msg: 'URL을 인식할 수 없습니다. 확인해 주세요.'
@@ -34,6 +26,9 @@ const ERROR_LIST = {
 }; 
 
 let comments = {};
+let excludeWords = [];
+let includeWords = [];
+let excludeIpFlag = false;
 
 const resetAll = () => {
     let entryElements = [];
@@ -157,6 +152,7 @@ const clickDraw = async (element) => {
 
 const showWinner = () => {
     document.querySelector('#winner-segment').style.display = 'block';
+    document.querySelector('#winner-click-notice').style.display = 'inline';
 };
 
 const viewRecentWinner = async () => {
@@ -202,7 +198,7 @@ const viewComment = (element) => {
     const deleteIcon = document.createElement('i');
     deleteIcon.className += 'delete icon';
     deleteIcon.setAttribute('onclick', 'removeCommentBox(this);');
-    const commentText = document.createTextNode(`${winnerNick}(${winnerId})의 댓글: ${comments[winnerNick + winnerId]}`);
+    const commentText = document.createTextNode(`${winnerNick}(${winnerId}): ${comments[winnerNick + winnerId]}`);
     commentLabel.appendChild(commentText);
     commentLabel.appendChild(deleteIcon);
     commentArea.appendChild(commentLabel);
@@ -213,3 +209,90 @@ const removeCommentBox = (element) => {
     $(element).parent().transition('fade');
     setTimeout(() => element.parentNode.remove(), 4000);
 }
+
+const viewOptionBox = () => {
+    const optionBoxElement = document.querySelector('#option-segment');
+    optionBoxElement.style.display = optionBoxElement.style.display === 'none' ? 'block' : 'none';
+};
+
+const inOrExcludeWord = (option) => {
+    const inputElement = document.querySelector(option);
+    const text = inputElement.value.trim();
+    if (!text || includeWords.includes(text) || excludeWords.includes(text)) return;
+    if (option === '#include-word-input') includeWords.push(text);
+    else excludeWords.push(text);
+    inputElement.value = '';
+    const includeWordsElement = document.querySelector('#include-word-list');
+    const excludeWordsElement = document.querySelector('#exclude-word-list');
+    if (option === '#include-word-input') {
+        const wordLabel = document.createElement('div');
+        wordLabel.className += 'ui mini blue label';
+        const textNode = document.createTextNode(text);
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList += 'delete icon';
+        deleteIcon.setAttribute('onclick', 'removeWordFromList("include", this);')
+        wordLabel.setAttribute('data-word', text)
+        wordLabel.appendChild(textNode);
+        wordLabel.appendChild(deleteIcon);
+        includeWordsElement.appendChild(wordLabel);
+    } else {
+        const wordLabel = document.createElement('div');
+        wordLabel.className += 'ui mini red label';
+        const textNode = document.createTextNode(text);
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList += 'delete icon';
+        deleteIcon.setAttribute('onclick', 'removeWordFromList("exclude", this);')
+        wordLabel.setAttribute('data-word', text)
+        wordLabel.appendChild(textNode);
+        wordLabel.appendChild(deleteIcon);
+        excludeWordsElement.appendChild(wordLabel);
+    }
+};
+
+const removeWordFromList = (option, element) => {
+    const word = element.parentNode.getAttribute('data-word');
+    const list = eval(option + 'Words')
+    const idx = list.indexOf(word);
+    if (idx > -1) list.splice(idx, 1);
+    element.parentNode.remove();
+};
+
+const applyOptions = () => {
+    if (!document.querySelector('#call-id').getAttribute('data-token')) return;
+    const includeElements = document.querySelectorAll('#include-segment > a[data-type="show"]');
+    for (const includeElement of includeElements) {
+        const nick = includeElement.getAttribute('data-nick');
+        const ip = includeElement.getAttribute('data-id');
+        if (excludeIpFlag && ip.includes('.')) { toggleExclude(includeElement); continue; }
+        const nickAndIp = nick + ip;
+        const comment = comments[nickAndIp];
+        let breakFlag = false;
+        for (const includeWord of includeWords) {
+            console.log(comment)
+            if (!comment.includes(includeWord)) {
+                toggleExclude(includeElement);
+                breakFlag = true; break;
+            }
+        }
+        if (breakFlag) continue;
+        for (const excludeWord of excludeWords) {
+            if (comment.includes(excludeWord)) {
+                toggleExclude(includeElement);
+                break;
+            }
+        }
+    }
+};
+
+const resetOptions = () => {
+    includeWords = [];
+    excludeWords = [];
+    excludeIpFlag = false;
+    document.querySelector('#ip-allow-checkbox').checked = false;
+    const excludeWordElements = document.querySelectorAll('.mini');
+    for (const excludeWordElement of excludeWordElements) {
+        excludeWordElement.remove();
+    }
+    const excludeEntries = document.querySelectorAll('#exclude-segment > a');
+    for (const excludeEntry of excludeEntries) toggleExclude(excludeEntry);
+};

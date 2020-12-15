@@ -16,8 +16,12 @@
     margin: 1em 0 0 1em;
 }
 
-.two.ui.buttons {
+.three.ui.buttons {
     margin-top: 10px;
+}
+
+.ui.fluid.basic.label {
+    margin: 4px;
 }
 
 .ui.pointing {
@@ -25,10 +29,22 @@
     margin-bottom: 0 !important;
 }
 
-.ui.fluid.basic.label {
-    margin: 4px;
+.word-input {
+    margin: 3px;
+}
+
+.checkbox {
+    margin-top: 8px;
 }
 
 .ui.fluid.basic.label > i {
     float: right;
+}
+
+#exclude-word-list, #include-word-list {
+    padding: 5px;
+}
+
+h4 {
+    display: inline;
 }

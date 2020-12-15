@@ -26,9 +26,34 @@
                 <div class="hidden content"><i class="search icon"></i></div>
             </div>
         </div>
-        <div class="two ui buttons">
+        <div class="three ui buttons">
             <button class="ui button" onclick="location.href = '/view_log'">로그 보기</button>
             <button class="ui button" onclick="viewRecentWinner();">최근 당첨자 보기</button>
+            <button class="ui button" onclick="viewOptionBox();">옵션</button>
+        </div>
+        <div class="ui segment" id="option-segment" style="display: none;">
+            <h2>옵션 설정</h2>
+            <div class="ui divider"></div>
+            <div class="ui action fluid labeled input word-input">
+                <div class="ui label">제외 단어</div>
+                <input type="text" id="exclude-word-input" placeholder="제외할 단어를 입력하세요...">
+                <button class="ui button" onclick="inOrExcludeWord('#exclude-word-input');">등록</button>
+            </div>
+            <div class="ui action fluid labeled input word-input">
+                <div class="ui label">포함 단어</div>
+                <input type="text" id="include-word-input" placeholder="필수로 포함해야 할 단어를 입력하세요...">
+                <button class="ui button" onclick="inOrExcludeWord('#include-word-input');">등록</button>
+            </div>
+            <div class="ui slider checkbox">
+                <input type="checkbox" id="ip-allow-checkbox" onclick="excludeIpFlag = this.checked;" tabindex="0">
+                <label>유동 제외하기</label>
+            </div>
+            <div id="exclude-word-list"><h4>제외 단어: </h4></div>
+            <div id="include-word-list"><h4>포함 단어: </h4></div>
+            <div class="two ui buttons">
+                <div class="ui button" onclick="applyOptions();">적용하기</div>
+                <div class="ui button" onclick="resetOptions();">초기화</div>
+            </div>
         </div>
         <div class="ui segment" id="recent-winner-segment" style="display: none;">
             <h2>최근 당첨자</h2>
@@ -65,6 +90,10 @@
             </div>
         </div>
         <div class="ui" id="view-comment-area">
+        </div>
+        <div id="winner-click-notice" class="ui pointing below blue basic label" style="display: none;">
+            당첨자 라벨을 누르면 댓글을 확인할 수 있습니다
+            <i class="delete icon" onclick="this.parentNode.remove();"></i>
         </div>
         <div class="ui segment" id="winner-segment" style="display: none;">
             <h2>당첨 리스트</h2>
