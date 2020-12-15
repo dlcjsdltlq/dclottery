@@ -15,6 +15,7 @@
 <body>
     <div class="ui container" id="main-container">
         <h1>로그 보기</h1>
+        <p><a id="url-hyperlink"></a></p>
         <p id="log-no"></p>
         <p id="gall-id"></p>
         <p id="article-no"></p>
@@ -38,6 +39,9 @@
             const status = JSON.parse('<%- JSON.stringify(status); %>');
             const res = JSON.parse('<%- JSON.stringify(result); %>');
             if (!status) { alert('오류가 발생하였습니다.'); return; }
+            const urlHyperlink = document.querySelector('#url-hyperlink');
+            urlHyperlink.textContent = '글 바로가기'; 
+            urlHyperlink.setAttribute('href', `https://gall.dcinside.com/board/view?id=${res.gallId}&no=${res.articleNo}`);
             document.querySelector('#log-no').textContent = '로그 번호: ' + res.logNo;
             document.querySelector('#gall-id').textContent = '갤러리 ID: ' + res.gallId;
             document.querySelector('#article-no').textContent = '글 번호: ' + res.articleNo;

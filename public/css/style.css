@@ -2,6 +2,10 @@
     margin-top: 3em;
 }
 
+.ui.container {
+    padding-bottom: 20px;
+}
+
 .ui > h1 {
     text-align: center;
     font-size: 3em;
@@ -19,4 +23,12 @@
 .ui.pointing {
     margin-top: 10px !important;
     margin-bottom: 0 !important;
+}
+
+.ui.fluid.basic.label {
+    margin: 4px;
+}
+
+.ui.fluid.basic.label > i {
+    float: right;
 }

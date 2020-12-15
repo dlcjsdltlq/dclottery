@@ -33,13 +33,18 @@ const ERROR_LIST = {
     }
 }; 
 
+let comments = {};
+
 const resetAll = () => {
-    const entryElements = document.querySelectorAll('a[data-type="show"]');
+    let entryElements = [];
+    entryElements.push(...document.querySelectorAll('a[data-type="show"]'));
+    entryElements.push(...document.querySelectorAll('a[data-type="winner"]'))
     for (const entryElement of entryElements) {
         entryElements[i].parentNode.removeChild(entryElement);
     }
     document.querySelector('#winner-segment').style.display = 'none';
     document.querySelector('#call-id').setAttribute('data-token', '');
+    comments = {};
 };
 
 const searchArticle = async (element) => {
@@ -55,7 +60,8 @@ const searchArticle = async (element) => {
             }
         });
         if (!res.data.status) throw res.data.result;
-        const entries = res.data.result;
+        const entries = res.data.result.entries;
+        comments = res.data.result.comments;
         const callId = res.data.callId;
         document.querySelector('#call-id').setAttribute('data-token', callId);
         const includeSegment = document.querySelector('#include-segment');
@@ -131,6 +137,8 @@ const clickDraw = async (element) => {
             let winnerBox = document.querySelector(`a[data-id="${winner[1]}"]`).cloneNode(true);
             winnerBox.classList.remove('teal');
             winnerBox.classList.add('blue');
+            winnerBox.setAttribute('data-type', 'winner');
+            winnerBox.setAttribute('onclick', 'viewComment(this);');
             winnerSegment.appendChild(winnerBox);
             document.querySelector('#call-id').setAttribute('data-token', '');
         }
@@ -153,7 +161,7 @@ const showWinner = () => {
 
 const viewRecentWinner = async () => {
     const recentWinnerSegment = document.querySelector('#recent-winner-segment');
-    const recentWinnerElements = recentWinnerSegment.querySelectorAll('a[data-type="show_winner"]');
+    const recentWinnerElements = recentWinnerSegment.querySelectorAll('div[data-type="show_winner"]');
     if (recentWinnerElements) {
         for (const recentWinnerElement of recentWinnerElements) {
             recentWinnerSegment.removeChild(recentWinnerElement);
@@ -184,3 +192,24 @@ const viewRecentWinner = async () => {
         }
     }
 };
+
+const viewComment = (element) => {
+    const commentArea = document.querySelector('#view-comment-area');
+    const winnerId = element.getAttribute('data-id');
+    const winnerNick = element.getAttribute('data-nick');
+    const commentLabel = document.createElement('div');
+    commentLabel.className += 'ui fluid blue basic label transition hidden';
+    const deleteIcon = document.createElement('i');
+    deleteIcon.className += 'delete icon';
+    deleteIcon.setAttribute('onclick', 'removeCommentBox(this);');
+    const commentText = document.createTextNode(`${winnerNick}(${winnerId})의 댓글: ${comments[winnerNick + winnerId]}`);
+    commentLabel.appendChild(commentText);
+    commentLabel.appendChild(deleteIcon);
+    commentArea.appendChild(commentLabel);
+    $(commentLabel).transition('fade');
+};
+
+const removeCommentBox = (element) => {
+    $(element).parent().transition('fade');
+    setTimeout(() => element.parentNode.remove(), 4000);
+}

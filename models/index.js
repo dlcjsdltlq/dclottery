@@ -12,6 +12,7 @@ const drawSchema = new mongoose.Schema({
     gallId: String,
     articleNo: String,
     entries: Array,
+    comments: String,
     createDate: {
         type: Date,
         expires: 600,
@@ -51,11 +52,12 @@ const DrawModel = mongoose.model('DrawModel', drawSchema);
 const RecentWinnersModel = mongoose.model('RecentWinnersModel', recentWinnerSchema);
 const LogModel = mongoose.model('LogModel', logSchema);
 
-const addDrawData = async (gallId, articleNo, entries) => {
+const addDrawData = async (gallId, articleNo, entries, comments) => {
     const drawInstance = new DrawModel({
         gallId: gallId,
         articleNo: articleNo,
-        entries: entries
+        entries: entries,
+        comments: JSON.stringify(comments)
     });
     try {
         const res = await drawInstance.save();
@@ -68,6 +70,8 @@ const addDrawData = async (gallId, articleNo, entries) => {
 const getDrawData = async (uniqueId) => {
     try {
         const res = await DrawModel.findOneAndDelete({ _id: uniqueId });
+        const comments = JSON.parse(res.comments);
+        res.comments = comments;
         return { status: true, result: res };
     } catch (error) {
         return { status: false, result: 'error' };

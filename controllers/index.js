@@ -11,10 +11,10 @@ const getCommentList = async (req, res) => {
         if (!parsedURL) throw 'URL_ERROR';
         const id = parsedURL.id;
         const no = parsedURL.no;
-        const entries = await commentService.getComment(id, no);
-        const dbRes = await drawModel.addDrawData(id, no, entries);
+        const entryDatas = await commentService.getComment(id, no);
+        const dbRes = await drawModel.addDrawData(id, no, entryDatas.entries, entryDatas.comments);
         if (!dbRes.status) throw 'DB_ERROR';
-        res.json({ status: true, result: entries, callId: dbRes.result });
+        res.json({ status: true, result: entryDatas, callId: dbRes.result });
     } catch (e) {
         let resError = ERROR_LIST.includes(e) ? e : 'GET_COMMENT_ERROR'; 
         res.json({ status: false, result: resError });
