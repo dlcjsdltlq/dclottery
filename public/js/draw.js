@@ -198,8 +198,7 @@ const viewComment = (element) => {
     const deleteIcon = document.createElement('i');
     deleteIcon.className += 'delete icon';
     deleteIcon.setAttribute('onclick', 'removeCommentBox(this);');
-    const commentText = document.createTextNode(`${winnerNick}(${winnerId}): ${comments[winnerNick + winnerId]}`);
-    commentLabel.appendChild(commentText);
+    commentLabel.innerHTML += `${winnerNick}(${winnerId}): ${comments[winnerNick + winnerId]}`;
     commentLabel.appendChild(deleteIcon);
     commentArea.appendChild(commentLabel);
     $(commentLabel).transition('fade');

@@ -53,7 +53,7 @@ const getComment = async (gallId, articleNo) => {
             let ipOrId = ip ? ip : entryInfo.user_id;
             if (name === "댓글돌이") continue;
             entries.push([name, ipOrId]);
-            comments[name + ipOrId] = comment.includes('https://dcimg5.dcinside.com/dccon.php?no=') ? '(디시콘)' : comment;
+            comments[name + ipOrId] = comment;
         }
     }
     return { entries: utils.removeOverlap(entries), comments: comments };
