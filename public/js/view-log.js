@@ -1,13 +1,13 @@
-const ERROR_LIST = { 
+const ERROR_LIST = {
     URL_ERROR: {
         msg: 'URL을 인식할 수 없습니다. 확인해 주세요.'
-    }, 
+    },
     DB_ERROR: {
         msg: '서버 DB에 오류가 발생하였습니다. 확인해 주세요.'
     },
     GET_COMMENT_ERROR: {
         msg: '댓글을 가져오는데 실패했습니다. 잠시후 다시 시도해 주세요.'
-    }, 
+    },
     NUM_OF_USERS_IS_NOT_CORRECT: {
         msg: '총 참가 인원수가 일치하지 않습니다. 확인해 주세요.'
     },
@@ -28,11 +28,13 @@ const ERROR_LIST = {
     }
 };
 
-const getArticle = async (start, end) => {
+let nowLogIndex = null;
+
+const loadLogList = async (start, end) => {
     const logTableElement = document.querySelector('#log-table');
     try {
         const res = await axios({
-            method: 'post', 
+            method: 'post',
             url: '/api/getloglist',
             data: {
                 start: start,
@@ -51,6 +53,7 @@ const getArticle = async (start, end) => {
             if (textNode.length > 35) textNode = textNode.substr(0, 35) + '...';
             let a = document.createElement('a');
             a.setAttribute('href', `/view_log/${logData.logNo}`);
+            a.setAttribute('target', '_blank');
             a.appendChild(document.createTextNode(textNode));
             newRow.insertCell().appendChild(a);
             newRow.insertCell().appendChild(document.createTextNode(logData.gallId));
@@ -62,28 +65,36 @@ const getArticle = async (start, end) => {
     }
 };
 
-const checkPageAndGetLog = async (button) => {
+const appendLogList = async () => {
+    let logIndexStart = nowLogIndex - 10;
+    if (nowLogIndex <= 1) return;
+    if (nowLogIndex !== null && nowLogIndex < 10) logIndexStart = 1;
+    await loadLogList(logIndexStart, nowLogIndex);
+    nowLogIndex = logIndexStart - 1;
+};
+
+const appendLog = async (button) => {
     button.classList.add('loading');
-    const currentPageElement = document.querySelector('#cur-page');
-    const currentPage = currentPageElement.getAttribute('data-page');
-    let nextPage = currentPageElement.getAttribute('data-page');
-    if (nextPage === '0') {
-        try {
-            const res = await axios({
-                method: 'get', 
-                url: '/api/getlastlogno'
-            });
-            if (!res.data.status) throw res.data.result;
-            nextPage = res.data.result;
-        } catch (e) {
-            if (!(e in ERROR_LIST)) e = 'ERROR_ELSE';
-            alert(ERROR_LIST[e].msg);
-        }
-    }
-    if (nextPage <= 1) { button.classList.remove('loading'); return; }
-    let startPage = nextPage - 9;
-    if (nextPage < 10 && currentPage !== '0') { nextPage -= 1; startPage = 1; }
-    await getArticle(startPage, nextPage);
-    currentPageElement.setAttribute('data-page', startPage);
+    await appendLogList();
     button.classList.remove('loading');
 };
+
+(() => {
+    document.onreadystatechange = async () => {
+        if (document.readyState == 'complete') {
+            //load first log
+            try {
+                const res = await axios({
+                    method: 'get',
+                    url: '/api/getlastlogno'
+                });
+                if (!res.data.status) throw res.data.result;
+                nowLogIndex = res.data.result;
+            } catch (e) {
+                if (!(e in ERROR_LIST)) e = 'ERROR_ELSE';
+                alert(ERROR_LIST[e].msg);
+            }
+            await appendLogList();
+        }
+    }
+})();
