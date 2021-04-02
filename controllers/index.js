@@ -71,19 +71,21 @@ const getLogList = async (req, res) => {
     }
 };
 
-const getLog = async (req, res) => {
+
+const renderResultPage = async (req, res) => {
     try {
         const logNo = req.params.logNo;
         const dbRes = await drawModel.getLog(logNo);
         if (!dbRes.status) throw 'DB_ERROR';
-        res.json({ status: true, result: dbRes.result})
+        res.render('result-page', { status: true, result: dbRes.result });
     } catch (e) {
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
-        res.json({ status: false, result: resError })
+        res.render('result-page', { status: true, result: resError });
     }
 };
 
-const getLogAndRender = async (req, res) => {
+
+const renderLogPage = async (req, res) => {
     try {
         const logNo = req.params.logNo;
         const dbRes = await drawModel.getLog(logNo);
@@ -91,7 +93,7 @@ const getLogAndRender = async (req, res) => {
         res.render('view-detailed-log', { status: true, result: dbRes.result });
     } catch (e) {
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
-        res.render('view-detailed-log', { status: true, result: resError });
+        res.render('view-detailed-log', { status: false, result: resError });
     }
 };
 
@@ -106,12 +108,25 @@ const getLastLogNo = async (req, res) => {
     }
 };
 
+const getScreenShot = async (req, res) => {
+    try {
+        const logNo = req.params.logNo;
+        const dir = await utils.capture(req.app.locals.page, logNo);
+        res.download(dir);
+    } catch (e) {
+        console.log(e)
+        let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
+        res.json({ status: true, result: resError });
+    }
+}
+
 module.exports = {
     getCommentList,
     drawUsers,
     getRecentWinners,
     getLogList,
-    getLog,
-    getLogAndRender,
-    getLastLogNo
+    renderLogPage,
+    renderResultPage,
+    getLastLogNo,
+    getScreenShot
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const puppeteer = require('puppeteer');
 const routes = require('./routes');
 const model = require('./models')
 const app = express();
@@ -16,6 +17,12 @@ app.use('/', routes);
 app.use(cors());
 
 model.initializeRecentWinnerDB();
+
+puppeteer.launch().then(async browser => {
+    page = await browser.newPage();
+    app.locals.page = page;
+});
+
 app.listen(3000, () => {
     console.log('App started on port 3000');
 });

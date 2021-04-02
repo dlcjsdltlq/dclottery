@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -18,42 +18,78 @@
 </head>
 
 <body>
-    <div class="ui container" id="main-container">
+    <div class="ui result-page">
         <h1>추첨 결과</h1>
         <div class="ui horizontal segments">
-            <div class="ui segment">
+            <div class="ui segment horizontal-align">
                 <h3>갤러리 ID: </h3>
-                <span id="gall-id"></span>
+                <span class="info-text" id="gall-id"></span>
             </div>
-            <div class="ui segment">
+            <div class="ui segment horizontal-align">
                 <h3>글 번호: </h3>
-                <span id="article-id"></span>
+                <span class="info-text" id="article-no"></span>
             </div>
-            <div class="ui segment">
+            <div class="ui segment horizontal-align">
                 <h3>로그 번호: </h3>
-                <span id="log-id"></span>
+                <span class="info-text" id="log-no"></span>
             </div>
-            <div class="ui segment">
+            <div class="ui segment horizontal-align">
                 <h3>추첨 인원: </h3>
-                <span id="peoples"></span>
+                <span class="info-text" id="num-of-entries"></span>
             </div>
         </div>
         <div class="ui horizontal segments">
-            <div id="include-segment" class="ui segment">
+            <div id="include-segment" class="ui segment w-50">
                 <h2>추첨 리스트</h2>
                 <div class="ui blue large label template" data-type="template">
-                    <div class="detail"></div>
+                    <div class="detail">a</div>
                 </div>
             </div>
-            <div id="exclude-segment" class="ui segment">
+            <div id="exclude-segment" class="ui segment w-50">
                 <h2>제외 리스트</h2>
             </div>
         </div>
-        <div class="ui segment">
-            <h2>당첨 리스트</h2>
+        <div id="winner-segment" class="ui segment">
+            <h2>당첨자</h2>
         </div>
     </div>
-    <script src="/static/js/show-result.js"></script>
+    <script>
+        const qs = document.querySelector.bind(document);
+        const status = JSON.parse('<%- JSON.stringify(status); %>');
+        const res = JSON.parse('<%- JSON.stringify(result); %>');
+        if (!status) { alert('오류가 발생하였습니다.'); }
+        qs('#gall-id').textContent = res.gallId;
+        qs('#article-no').textContent = res.articleNo;
+        qs('#log-no').textContent = res.logNo;
+        qs('#num-of-entries').textContent = res.numOfEntries;
+        const createLabel = (color, text, detail) => {
+            const element = document.createElement('div');
+            element.classList.add('ui', 'label', 'large', color);
+            const detailLabel = document.createElement('div');
+            detailLabel.classList.add('detail');
+            const labelTextNode = document.createTextNode(text);
+            element.appendChild(labelTextNode);
+            const detailTextNode = document.createTextNode(detail);
+            detailLabel.appendChild(detailTextNode);
+            element.appendChild(detailLabel);
+            return element;
+        };
+        const includeSegment = qs('#include-segment');
+        for (const entry of res.includeEntries) {
+            const newLabel = createLabel('blue', entry[0], entry[1]);
+            includeSegment.appendChild(newLabel);
+        }
+        const excludeSegment = qs('#exclude-segment');
+        for (const entry of res.excludeEntries) {
+            const newLabel = createLabel('red', entry[0], entry[1]);
+            excludeSegment.appendChild(newLabel);
+        }
+        const winnerSegment = qs('#winner-segment');
+        for (const winner of res.winners) {
+            const newLabel = createLabel('green', winner[0], winner[1]);
+            winnerSegment.appendChild(newLabel);
+        }
+    </script>
 </body>
 
 </html>

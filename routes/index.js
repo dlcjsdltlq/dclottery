@@ -7,17 +7,16 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.render('index');
 });
-router.get('/result_page', (req, res) => {
-    res.render('result-page');
-});
+router.get('/result_page/:logNo', draw.renderResultPage);
 router.get('/view_log', (req, res) => {
     res.render('view-log');
 });
-router.get('/view_log/:logNo', draw.getLogAndRender);
+router.get('/view_log/:logNo', draw.renderLogPage);
 router.get('/robots.txt', (req, res) => res.send('<pre>User-agent: *\nDisallow: /\nAllow: /$<pre>'));
 
 router.get('/api/getlastlogno', draw.getLastLogNo);
-router.get('/api/getlog', draw.getLog)
+
+router.get('/api/getscreenshot/:logNo', draw.getScreenShot)
 
 router.post('/api/getcomment', draw.getCommentList);
 router.post('/api/draw', draw.drawUsers);

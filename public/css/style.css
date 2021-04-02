@@ -60,5 +60,23 @@ h3, h4 {
 }
 
 .template {
-    display: none;
+    display: none !important;
+}
+
+.info-text {
+    font-size: 2.5em;
+    vertical-align: top;
+}
+
+.ui.large.label {
+    margin: 1px !important;
+}
+
+.w-50 {
+    width: 50% !important;
+}
+
+.result-page {
+    margin: 30px;
+    padding-bottom: 30px;
 }
