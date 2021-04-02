@@ -69,9 +69,21 @@ const getLogList = async (req, res) => {
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
         res.json({ status: false, result: resError })
     }
-}
+};
 
 const getLog = async (req, res) => {
+    try {
+        const logNo = req.params.logNo;
+        const dbRes = await drawModel.getLog(logNo);
+        if (!dbRes.status) throw 'DB_ERROR';
+        res.json({ status: true, result: dbRes.result})
+    } catch (e) {
+        let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
+        res.json({ status: false, result: resError })
+    }
+};
+
+const getLogAndRender = async (req, res) => {
     try {
         const logNo = req.params.logNo;
         const dbRes = await drawModel.getLog(logNo);
@@ -100,5 +112,6 @@ module.exports = {
     getRecentWinners,
     getLogList,
     getLog,
+    getLogAndRender,
     getLastLogNo
 };

@@ -4,7 +4,7 @@ body {
     font-family: 'Noto Sans KR', sans-serif !important;
 }
 
-div, a, p, input, span, h1, h2, h3, .button {
+div, a, p, input, span, h1, h2, h3, h5, .button {
     font-family: inherit !important;
 }
 
@@ -55,6 +55,10 @@ div, a, p, input, span, h1, h2, h3, .button {
     padding: 5px;
 }
 
-h4 {
+h3, h4 {
     display: inline;
+}
+
+.template {
+    display: none;
 }

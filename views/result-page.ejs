@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <style>
+        body {
+            text-align: center !important;
+        }
+    </style>
+    <title>DC추첨기</title>
+</head>
+
+<body>
+    <div class="ui container" id="main-container">
+        <h1>추첨 결과</h1>
+        <div class="ui horizontal segments">
+            <div class="ui segment">
+                <h3>갤러리 ID: </h3>
+                <span id="gall-id"></span>
+            </div>
+            <div class="ui segment">
+                <h3>글 번호: </h3>
+                <span id="article-id"></span>
+            </div>
+            <div class="ui segment">
+                <h3>로그 번호: </h3>
+                <span id="log-id"></span>
+            </div>
+            <div class="ui segment">
+                <h3>추첨 인원: </h3>
+                <span id="peoples"></span>
+            </div>
+        </div>
+        <div class="ui horizontal segments">
+            <div id="include-segment" class="ui segment">
+                <h2>추첨 리스트</h2>
+                <div class="ui blue large label template" data-type="template">
+                    <div class="detail"></div>
+                </div>
+            </div>
+            <div id="exclude-segment" class="ui segment">
+                <h2>제외 리스트</h2>
+            </div>
+        </div>
+        <div class="ui segment">
+            <h2>당첨 리스트</h2>
+        </div>
+    </div>
+    <script src="/static/js/show-result.js"></script>
+</body>
+
+</html>
