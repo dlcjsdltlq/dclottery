@@ -18,7 +18,9 @@ app.use(cors());
 
 model.initializeRecentWinnerDB();
 
-puppeteer.launch().then(async browser => {
+puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+}).then(async browser => {
     page = await browser.newPage();
     app.locals.page = page;
 });
