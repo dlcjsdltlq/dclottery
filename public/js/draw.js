@@ -29,6 +29,7 @@ let comments = {};
 let excludeWords = [];
 let includeWords = [];
 let excludeIpFlag = false;
+let logNo = null;
 
 const resetAll = () => {
     let entryElements = [];
@@ -126,7 +127,8 @@ const clickDraw = async (element) => {
             }
         });
         if (!res.data.status) throw res.data.result;
-        const winners = res.data.result;
+        const winners = res.data.result.winners;
+        logNo = res.data.result.logNo;
         const winnerSegment = document.querySelector('#winner-segment');
         for (const winner of winners) {
             let winnerBox = document.querySelector(`a[data-id="${winner[1]}"]`).cloneNode(true);
@@ -294,4 +296,10 @@ const resetOptions = () => {
     }
     const excludeEntries = document.querySelectorAll('#exclude-segment > a');
     for (const excludeEntry of excludeEntries) toggleExclude(excludeEntry);
+};
+
+const downloadScreenshot = () => {
+    if (logNo !== null) {
+        window.location.assign('/api/getscreenshot/' + logNo);
+    }
 };

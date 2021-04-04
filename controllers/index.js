@@ -40,7 +40,7 @@ const drawUsers = async (req, res) => {
         if (!recentDbRes.status) throw 'DB_ERROR';
         const logDbRes = await drawModel.addLog(dbRes.result.gallId, dbRes.result.articleNo, checkEntries, includeEntries, excludeEntries, numOfEntries, winners);
         if (!logDbRes.status) throw 'DB_ERROR';
-        res.json({ status: true, result: winners });
+        res.json({ status: true, result: { winners: winners, logNo: logDbRes.result.logNo } });
     } catch (e) {
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
         res.json({ status: false, result: resError });
@@ -111,8 +111,11 @@ const getLastLogNo = async (req, res) => {
 const getScreenShot = async (req, res) => {
     try {
         const logNo = req.params.logNo;
-        const dir = await utils.capture(req.app.locals.page, logNo);
-        res.download(dir);
+        const data = await utils.capture(req.app.locals.page, logNo);
+        res.writeHead(200, {
+            'Content-disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`
+        });
+        res.end(new Buffer.from(data, 'base64'));
     } catch (e) {
         console.log(e)
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 

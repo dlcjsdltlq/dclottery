@@ -128,7 +128,7 @@ const addLog = async (gallId, articleNo, entries, includeEntries, excludeEntries
             winners: winners
         });
         const res = await logInstance.save();
-        return { status: true };
+        return { status: true, result: { logNo: res.logNo } };
     } catch (e) {
         return { status: false };
     }

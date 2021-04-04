@@ -28,8 +28,6 @@ const ERROR_LIST = {
     }
 };
 
-let nowLogIndex = null;
-
 const loadLogList = async (start, end) => {
     const logTableElement = document.querySelector('#log-table');
     try {
@@ -65,24 +63,23 @@ const loadLogList = async (start, end) => {
     }
 };
 
-const appendLogList = async () => {
-    let logIndexStart = nowLogIndex - 10;
-    if (nowLogIndex <= 1) return;
-    if (nowLogIndex !== null && nowLogIndex < 10) logIndexStart = 1;
-    await loadLogList(logIndexStart, nowLogIndex);
-    nowLogIndex = logIndexStart - 1;
-};
-
-const appendLog = async (button) => {
-    button.classList.add('loading');
-    await appendLogList();
-    button.classList.remove('loading');
+const appendLogList = (nowLogIndex, button) => {
+    return async () => {
+        button.classList.add('loading');
+        let logIndexStart = nowLogIndex - 10;
+        if (nowLogIndex <= 1) { button.classList.remove('loading'); return; }
+        if (nowLogIndex !== null && nowLogIndex < 10) logIndexStart = 1;
+        await loadLogList(logIndexStart, nowLogIndex);
+        nowLogIndex = logIndexStart - 1;
+        button.classList.remove('loading');
+    };
 };
 
 (() => {
     document.onreadystatechange = async () => {
         if (document.readyState == 'complete') {
             //load first log
+            let nowLogIndex = null;
             try {
                 const res = await axios({
                     method: 'get',
@@ -94,7 +91,10 @@ const appendLog = async (button) => {
                 if (!(e in ERROR_LIST)) e = 'ERROR_ELSE';
                 alert(ERROR_LIST[e].msg);
             }
-            await appendLogList();
+            const element = document.querySelector('#view-more');
+            const func = appendLogList(nowLogIndex, element);
+            await func();
+            element.onclick = func;
         }
     }
 })();

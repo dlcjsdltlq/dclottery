@@ -1,6 +1,3 @@
-const path = require('path');
-const fs = require('fs');
-
 const randInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -38,13 +35,11 @@ const sleep = (t) => {
 const capture = async (page, logNo) => {
     page.setViewport({ width: 1440, height: 10, deviceScaleFactor: 2 });
     await page.goto(`http://localhost:3000/result_page/${logNo}`);
-    //const dir = `${(new Date()).toISOString()}-${logNo}.png`;
-    const dir = 'a.png';
-    await page.screenshot({
+    const data = await page.screenshot({
         fullPage: true,
-        path: dir
+        encoding: 'base64'
     });
-    return dir;
+    return data;
 };
 
 

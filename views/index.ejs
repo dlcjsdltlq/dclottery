@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -47,8 +47,12 @@
                 <input type="checkbox" id="ip-allow-checkbox" onclick="excludeIpFlag = this.checked;">
                 <label>유동 제외하기</label>
             </div>
-            <div id="exclude-word-list"><h4>제외 단어: </h4></div>
-            <div id="include-word-list"><h4>포함 단어: </h4></div>
+            <div id="exclude-word-list">
+                <h4>제외 단어: </h4>
+            </div>
+            <div id="include-word-list">
+                <h4>포함 단어: </h4>
+            </div>
             <div class="two ui buttons">
                 <div class="ui button" onclick="applyOptions();">적용하기</div>
                 <div class="ui button" onclick="resetOptions();">초기화</div>
@@ -68,7 +72,8 @@
         <div class="ui segment" id="include-segment">
             <h2>추첨 리스트</h2>
             <div class="ui divider"></div>
-            <a class="ui teal large label" style="display: none;" onclick="toggleExclude(this);" data-type="template" data-nick="" data-id="">
+            <a class="ui teal large label" style="display: none;" onclick="toggleExclude(this);" data-type="template"
+                data-nick="" data-id="">
                 <div class="detail"></div>
             </a>
         </div>
@@ -96,6 +101,7 @@
         </div>
         <div class="ui segment" id="winner-segment" style="display: none;">
             <h2>당첨 리스트</h2>
+            <div class="ui button" onclick="downloadScreenshot();">캡처 다운로드</div>
             <div class="ui divider"></div>
         </div>
     </div>

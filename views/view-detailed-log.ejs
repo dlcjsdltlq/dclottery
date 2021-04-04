@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -15,7 +15,8 @@
 <body>
     <div class="ui container" id="main-container">
         <h1>로그 보기</h1>
-        <p><a id="url-hyperlink"></a></p>
+        <p><a id="url-hyperlink">글 바로가기</a></p>
+        <p><a id="screenshot-hyperlink">캡처 다운로드</a></p>
         <p id="log-no"></p>
         <p id="gall-id"></p>
         <p id="article-no"></p>
@@ -29,7 +30,7 @@
     <script>
         const arrayToStr = (arr) => {
             let str = '';
-            for(const element of arr) {
+            for (const element of arr) {
                 str += `${element[0]}(${element[1]}), `;
             }
             return str.substr(0, str.length - 2);
@@ -40,8 +41,9 @@
             const res = JSON.parse('<%- JSON.stringify(result); %>');
             if (!status) { alert('오류가 발생하였습니다.'); return; }
             const urlHyperlink = document.querySelector('#url-hyperlink');
-            urlHyperlink.textContent = '글 바로가기'; 
+            const screenshotHyperlink = document.querySelector('#screenshot-hyperlink');
             urlHyperlink.setAttribute('href', `https://gall.dcinside.com/board/view?id=${res.gallId}&no=${res.articleNo}`);
+            screenshotHyperlink.setAttribute('href', `/api/getscreenshot/${res.logNo}`)
             document.querySelector('#log-no').textContent = '로그 번호: ' + res.logNo;
             document.querySelector('#gall-id').textContent = '갤러리 ID: ' + res.gallId;
             document.querySelector('#article-no').textContent = '글 번호: ' + res.articleNo;
@@ -52,6 +54,7 @@
             document.querySelector('#winners').textContent = '당첨자: ' + arrayToStr(res.winners);
             document.querySelector('#time').textContent = '추첨 시간: ' + res.createDate;
         };
+
         main();
     </script>
 </body>
