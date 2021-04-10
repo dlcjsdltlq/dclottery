@@ -33,7 +33,7 @@ const sleep = (t) => {
 };
 
 const capture = async (page, logNo) => {
-    page.setViewport({ width: 1440, height: 10, deviceScaleFactor: 2 });
+    page.setViewport({ width: 1560, height: 10, deviceScaleFactor: 2 });
     await page.goto(`http://localhost:3000/result_page/${logNo}`);
     const data = await page.screenshot({
         fullPage: true,

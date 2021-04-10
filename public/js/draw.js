@@ -155,6 +155,8 @@ const clickDraw = async (element) => {
 const showWinner = () => {
     document.querySelector('#winner-segment').style.display = 'block';
     document.querySelector('#winner-click-notice').style.display = 'inline';
+    document.querySelector('#capture-btn').style.display = 'block';
+    window.scrollTo(0,document.body.scrollHeight);
 };
 
 const viewRecentWinner = async () => {
