@@ -94,3 +94,9 @@ h3, h4 {
     margin: 30px;
     padding-bottom: 30px;
 }
+
+#github-url {
+    margin-top: 50px;
+    display: block;
+    text-align: center;
+}

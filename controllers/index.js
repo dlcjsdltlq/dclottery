@@ -112,10 +112,12 @@ const getScreenShot = async (req, res) => {
     try {
         const logNo = req.params.logNo;
         const data = await utils.capture(req.app.locals.page, logNo);
+        const buffer = new Buffer.from(data, 'base64');
         res.writeHead(200, {
-            'Content-disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`
+            'Content-disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`,
+            'Content-Length': Buffer.byteLength(buffer)
         });
-        res.end(new Buffer.from(data, 'base64'));
+        res.end(buffer);
     } catch (e) {
         console.log(e)
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
