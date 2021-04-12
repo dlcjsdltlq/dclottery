@@ -109,7 +109,7 @@ const isScrolledIntoView = (elem) => {
             element.onclick = func;
             window.addEventListener('scroll', (e) => {
                 const element = document.querySelector('#view-more');
-                if (isScrolledIntoView(element)) func();
+                if (isScrolledIntoView(element)) setTimeout(func, 100);
             });
         }
     }
