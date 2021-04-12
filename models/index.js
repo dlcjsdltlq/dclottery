@@ -149,8 +149,6 @@ const getLogList = async (start, end) => {
 const getLog = async (logNo) => {
     try {
         const res = await LogModel.findOne({ logNo: logNo }).lean();
-        const date = new Date(res.createDate);
-        res.createDate = date.toLocaleString();
         return { status: true, result: res };
     } catch (e) {
         console.log(e)
