@@ -90,7 +90,6 @@ const renderLogPage = async (req, res) => {
         const logNo = req.params.logNo;
         const dbRes = await drawModel.getLog(logNo);
         if (!dbRes.status) throw 'DB_ERROR';
-        dbRes.result.createDate = (new Date(dbRes.result.createDate)).toUTCString();
         res.render('view-detailed-log', { status: true, result: dbRes.result });
     } catch (e) {
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
