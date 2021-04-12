@@ -53,17 +53,7 @@
     <script>
         const qs = document.querySelector.bind(document);
         const status = JSON.parse('<%- JSON.stringify(status); %>');
-        let resStr = '<%- JSON.stringify(result); %>';
-        resStr = resStr.replace(/\\n/g, "\\n")  
-                        .replace(/\\'/g, "\\'")
-                        .replace(/\\"/g, '\\"')
-                        .replace(/\\&/g, "\\&")
-                        .replace(/\\r/g, "\\r")
-                        .replace(/\\t/g, "\\t")
-                        .replace(/\\b/g, "\\b")
-                        .replace(/\\f/g, "\\f")
-                        .replace(/[\u0000-\u001F]+/g,"");
-        const res = JSON.parse(resStr);
+        const res = <%- JSON.stringify(result); %>;
         if (!status) { alert('오류가 발생하였습니다.'); }
         qs('#gall-id').textContent = res.gallId;
         qs('#article-no').textContent = res.articleNo;

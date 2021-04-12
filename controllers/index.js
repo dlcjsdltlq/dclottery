@@ -90,6 +90,7 @@ const renderLogPage = async (req, res) => {
         const logNo = req.params.logNo;
         const dbRes = await drawModel.getLog(logNo);
         if (!dbRes.status) throw 'DB_ERROR';
+        dbRes.result.createDate = (new Date(dbRes.result.createDate)).toUTCString();
         res.render('view-detailed-log', { status: true, result: dbRes.result });
     } catch (e) {
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
@@ -112,10 +113,13 @@ const getScreenShot = async (req, res) => {
     try {
         const logNo = req.params.logNo;
         const data = await utils.capture(req.app.locals.page, logNo);
+        const buffer = new Buffer.from(data, 'base64');
         res.writeHead(200, {
-            'Content-disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`
+            'Content-Disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`,
+            'Content-Length': Buffer.byteLength(buffer),
+            'Content-Type': 'image/png'
         });
-        res.end(new Buffer.from(data, 'base64'));
+        res.end(buffer);
     } catch (e) {
         console.log(e)
         let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
