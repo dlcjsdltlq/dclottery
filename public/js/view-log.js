@@ -75,6 +75,16 @@ const appendLogList = (nowLogIndex, button) => {
     };
 };
 
+const isScrolledIntoView = (elem) => {
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+};
+
 (() => {
     document.onreadystatechange = async () => {
         if (document.readyState == 'complete') {
@@ -83,7 +93,7 @@ const appendLogList = (nowLogIndex, button) => {
             try {
                 const res = await axios({
                     method: 'get',
-                    url: '/api/getlastlogno'
+                    url: 'api/getlastlogno'
                 });
                 if (!res.data.status) throw res.data.result;
                 nowLogIndex = res.data.result;
@@ -93,8 +103,14 @@ const appendLogList = (nowLogIndex, button) => {
             }
             const element = document.querySelector('#view-more');
             const func = appendLogList(nowLogIndex, element);
-            await func();
+            while (isScrolledIntoView(element)) {
+                await func(); 
+            }
             element.onclick = func;
+            window.addEventListener('scroll', (e) => {
+                const element = document.querySelector('#view-more');
+                if (isScrolledIntoView(element)) func();
+            });
         }
     }
 })();
