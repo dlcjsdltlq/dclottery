@@ -53,7 +53,7 @@
     <script>
         const qs = document.querySelector.bind(document);
         const status = JSON.parse('<%- JSON.stringify(status); %>');
-        const res = JSON.parse('<%- JSON.stringify(result); %>');
+        const res = <%- JSON.stringify(result); %>;
         if (!status) { alert('오류가 발생하였습니다.'); }
         qs('#gall-id').textContent = res.gallId;
         qs('#article-no').textContent = res.articleNo;

@@ -38,7 +38,7 @@
 
         const main = () => {
             const status = JSON.parse('<%- JSON.stringify(status); %>');
-            const res = JSON.parse('<%- JSON.stringify(result); %>');
+            const res = <%- JSON.stringify(result); %>;
             if (!status) { alert('오류가 발생하였습니다.'); return; }
             const urlHyperlink = document.querySelector('#url-hyperlink');
             const screenshotHyperlink = document.querySelector('#screenshot-hyperlink');
@@ -52,7 +52,7 @@
             document.querySelector('#exclude-entries').textContent = '제외 참가자: ' + (res.excludeEntries.length === 0 ? '없음' : arrayToStr(res.excludeEntries));
             document.querySelector('#num-of-entries').textContent = '추첨 인원: ' + res.numOfEntries;
             document.querySelector('#winners').textContent = '당첨자: ' + arrayToStr(res.winners);
-            document.querySelector('#time').textContent = '추첨 시간: ' + res.createDate;
+            document.querySelector('#time').textContent = '추첨 시간: ' + (new Date(res.createDate)).toLocaleString();
         };
 
         main();

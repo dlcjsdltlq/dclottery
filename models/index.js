@@ -148,9 +148,10 @@ const getLogList = async (start, end) => {
 
 const getLog = async (logNo) => {
     try {
-        const res = await LogModel.findOne({ logNo: logNo });
+        const res = await LogModel.findOne({ logNo: logNo }).lean();
         return { status: true, result: res };
     } catch (e) {
+        console.log(e)
         return { status: false, result: e };
     }
 };

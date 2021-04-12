@@ -114,8 +114,9 @@ const getScreenShot = async (req, res) => {
         const data = await utils.capture(req.app.locals.page, logNo);
         const buffer = new Buffer.from(data, 'base64');
         res.writeHead(200, {
-            'Content-disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`,
-            'Content-Length': Buffer.byteLength(buffer)
+            'Content-Disposition': `attachment;filename=dclottery.live-${(new Date).toISOString()}-${logNo}.png`,
+            'Content-Length': Buffer.byteLength(buffer),
+            'Content-Type': 'image/png'
         });
         res.end(buffer);
     } catch (e) {
