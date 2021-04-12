@@ -150,7 +150,6 @@ const getLog = async (logNo) => {
     try {
         const res = await LogModel.findOne({ logNo: logNo }).lean();
         const date = new Date(res.createDate);
-        date.setHours(date.getHours() + 9)
         res.createDate = date.toLocaleString();
         return { status: true, result: res };
     } catch (e) {
