@@ -100,3 +100,8 @@ h3, h4 {
     display: block;
     text-align: center;
 }
+
+.ui.form {  
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}

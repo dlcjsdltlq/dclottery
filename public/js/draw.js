@@ -1,13 +1,13 @@
-const ERROR_LIST = { 
+const ERROR_LIST = {
     URL_ERROR: {
         msg: 'URL을 인식할 수 없습니다. 확인해 주세요.'
-    }, 
+    },
     DB_ERROR: {
         msg: '서버 DB에 오류가 발생하였습니다. 확인해 주세요.'
     },
     GET_COMMENT_ERROR: {
         msg: '댓글을 가져오는데 실패했습니다. 잠시후 다시 시도해 주세요.'
-    }, 
+    },
     NUM_OF_USERS_IS_NOT_CORRECT: {
         msg: '총 참가 인원수가 일치하지 않습니다. 확인해 주세요.'
     },
@@ -23,9 +23,10 @@ const ERROR_LIST = {
     ERROR_CLIENT: {
         msg: '오류가 발생하였습니다.'
     }
-}; 
+};
 
 let comments = {};
+let timeList = {};
 let excludeWords = [];
 let includeWords = [];
 let excludeIpFlag = false;
@@ -50,7 +51,7 @@ const searchArticle = async (element) => {
     try {
         const res = await axios({
             method: 'post',
-            url: '/api/getcomment', 
+            url: '/api/getcomment',
             data: {
                 url: dcUrl.value
             }
@@ -58,6 +59,7 @@ const searchArticle = async (element) => {
         if (!res.data.status) throw res.data.result;
         const entries = res.data.result.entries;
         comments = res.data.result.comments;
+        timeList = res.data.result.dates;
         const callId = res.data.callId;
         document.querySelector('#call-id').setAttribute('data-token', callId);
         const includeSegment = document.querySelector('#include-segment');
@@ -156,7 +158,7 @@ const showWinner = () => {
     document.querySelector('#winner-segment').style.display = 'block';
     document.querySelector('#winner-click-notice').style.display = 'inline';
     document.querySelector('#capture-btn').style.display = 'block';
-    window.scrollTo(0,document.body.scrollHeight);
+    window.scrollTo(0, document.body.scrollHeight);
 };
 
 const viewRecentWinner = async () => {
@@ -263,11 +265,14 @@ const removeWordFromList = (option, element) => {
 const applyOptions = () => {
     if (!document.querySelector('#call-id').getAttribute('data-token')) return;
     const includeElements = document.querySelectorAll('#include-segment > a[data-type="show"]');
+    const timeCut = (new Date(document.querySelector('#time-cut').value)).getTime();
+    console.log(timeCut)
     for (const includeElement of includeElements) {
         const nick = includeElement.getAttribute('data-nick');
         const ip = includeElement.getAttribute('data-id');
-        if (excludeIpFlag && ip.includes('.')) { toggleExclude(includeElement); continue; }
         const nickAndIp = nick + ip;
+        console.log((new Date(timeList[nickAndIp])).getTime());
+        if ((excludeIpFlag && ip.includes('.')) || (timeCut < (new Date(timeList[nickAndIp])).getTime())) { toggleExclude(includeElement); continue; }
         const comment = comments[nickAndIp];
         let breakFlag = false;
         for (const includeWord of includeWords) {
@@ -305,3 +310,14 @@ const downloadScreenshot = () => {
         window.location.assign('/api/getscreenshot/' + logNo);
     }
 };
+
+(() => {
+    document.onreadystatechange = () => {
+        if (document.readyState == 'complete') {
+            const element = document.querySelector('#time-cut');
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            element.value = now.toISOString().slice(0, 16); 
+        }
+    }
+})();

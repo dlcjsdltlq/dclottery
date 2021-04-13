@@ -40,24 +40,26 @@ const getComment = async (gallId, articleNo) => {
         },
         json: true
     };
-    const entries = []; const comments = {};
+    const entries = [], comments = {}, dates = {};
     let totalPages = -1;
     while (totalPages) {
         const commentBody = await new Promise((resolve, reject) => request.post(getCommentOptions, (error, response, body) => {resolve(body)}));
         if (totalPages === -1) totalPages = Math.ceil(commentBody.total_cnt / 106);
         getCommentOptions.form.comment_page = totalPages--;
         for (const entryInfo of commentBody.comments) {
-            let ip = entryInfo.ip;
-            let name = entryInfo.name;
-            let comment = entryInfo.memo;
-            let ipOrId = ip ? ip : entryInfo.user_id;
+            const ip = entryInfo.ip;
+            const name = entryInfo.name;
+            const comment = entryInfo.memo;
+            const ipOrId = ip ? ip : entryInfo.user_id;
+            const date = utils.nomalizeDate(entryInfo.reg_date);
             if (name === "댓글돌이") continue;
             entries.push([name, ipOrId]);
             comments[name + ipOrId] = comment;
+            if (!(name + ipOrId in dates)) dates[name + ipOrId] = date;
         }
     }
-    return { entries: utils.removeOverlap(entries), comments: comments };
-}
+    return { entries: utils.removeOverlap(entries), comments: comments, dates: dates };
+};
 
 const parseURL = (url) => {
     const idPattern = /id=(\w+)/g;
@@ -73,7 +75,8 @@ const parseURL = (url) => {
         no = url.match(mNoPattern)[0].replace('/', '');
     }
     return { id: id, no: no };
-}
+};
+
 module.exports = {
     getComment,
     parseURL

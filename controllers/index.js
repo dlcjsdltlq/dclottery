@@ -16,7 +16,7 @@ const getCommentList = async (req, res) => {
         if (!dbRes.status) throw 'DB_ERROR';
         res.json({ status: true, result: entryDatas, callId: dbRes.result });
     } catch (e) {
-        let resError = ERROR_LIST.includes(e) ? e : 'GET_COMMENT_ERROR'; 
+        let resError = ERROR_LIST.includes(e) ? e : 'GET_COMMENT_ERROR';
         res.json({ status: false, result: resError });
     }
 };

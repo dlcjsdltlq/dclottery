@@ -42,6 +42,13 @@ const capture = async (page, logNo) => {
     return data;
 };
 
+const nomalizeDate = (date) => {
+    if (date.split('.')[0].length < 4) {
+        return (new Date()).getFullYear() + '.' + date;
+    };
+    return date;
+};
+
 
 module.exports = {
     randInt,
@@ -49,5 +56,6 @@ module.exports = {
     removeOverlap,
     isArrayEqual,
     sleep,
-    capture
+    capture,
+    nomalizeDate
 };
