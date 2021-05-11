@@ -43,7 +43,7 @@
             if (!status) { alert('오류가 발생하였습니다.'); return; }
             const urlHyperlink = document.querySelector('#url-hyperlink');
             const screenshotHyperlink = document.querySelector('#screenshot-hyperlink');
-            urlHyperlink.setAttribute('href', `https://gall.dcinside.com/${res.isMini && 'mini/'}board/view?id=${res.gallId}&no=${res.articleNo}`);
+            urlHyperlink.setAttribute('href', `https://gall.dcinside.com/${res.isMini ? 'mini/' : ''}board/view?id=${res.gallId}&no=${res.articleNo}`);
             screenshotHyperlink.setAttribute('href', `/api/getscreenshot/${res.logNo}`)
             document.querySelector('#log-no').textContent = '로그 번호: ' + res.logNo;
             document.querySelector('#gall-id').textContent = '갤러리 ID: ' + res.gallId;
