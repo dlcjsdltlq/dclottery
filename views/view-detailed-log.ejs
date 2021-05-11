@@ -19,7 +19,7 @@
         <p><a id="url-hyperlink">글 바로가기</a></p>
         <p><a id="screenshot-hyperlink">이미지로 저장</a></p>
         <p id="log-no"></p>
-        <p id="gall-id"></p>
+        <p><span id="gall-id"></span><span id="is-mini" style="display: none;"></span></p>
         <p id="article-no"></p>
         <p id="entries"></p>
         <p id="include-entries"></p>
@@ -43,7 +43,7 @@
             if (!status) { alert('오류가 발생하였습니다.'); return; }
             const urlHyperlink = document.querySelector('#url-hyperlink');
             const screenshotHyperlink = document.querySelector('#screenshot-hyperlink');
-            urlHyperlink.setAttribute('href', `https://gall.dcinside.com/board/view?id=${res.gallId}&no=${res.articleNo}`);
+            urlHyperlink.setAttribute('href', `https://gall.dcinside.com/${res.isMini && 'mini/'}board/view?id=${res.gallId}&no=${res.articleNo}`);
             screenshotHyperlink.setAttribute('href', `/api/getscreenshot/${res.logNo}`)
             document.querySelector('#log-no').textContent = '로그 번호: ' + res.logNo;
             document.querySelector('#gall-id').textContent = '갤러리 ID: ' + res.gallId;
@@ -54,6 +54,7 @@
             document.querySelector('#num-of-entries').textContent = '추첨 인원: ' + res.numOfEntries;
             document.querySelector('#winners').textContent = '당첨자: ' + arrayToStr(res.winners);
             document.querySelector('#time').textContent = '추첨 시간: ' + (new Date(res.createDate)).toLocaleString();
+            document.querySelector('#is-mini').style.display = res.isMini && 'inline-block';
         };
 
         main();

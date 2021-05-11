@@ -9,10 +9,9 @@ const getCommentList = async (req, res) => {
     try {
         const parsedURL = commentService.parseURL(url);
         if (!parsedURL) throw 'URL_ERROR';
-        const id = parsedURL.id;
-        const no = parsedURL.no;
-        const entryDatas = await commentService.getComment(id, no);
-        const dbRes = await drawModel.addDrawData(id, no, entryDatas.entries, entryDatas.comments);
+        const { id, no, isMini } = parsedURL;
+        const entryDatas = await commentService.getComment(id, no, isMini);
+        const dbRes = await drawModel.addDrawData(id, no, isMini, entryDatas.entries, entryDatas.comments);
         if (!dbRes.status) throw 'DB_ERROR';
         res.json({ status: true, result: entryDatas, callId: dbRes.result });
     } catch (e) {
@@ -38,7 +37,7 @@ const drawUsers = async (req, res) => {
         }
         const recentDbRes = await drawModel.updateRecentWinner(winners);
         if (!recentDbRes.status) throw 'DB_ERROR';
-        const logDbRes = await drawModel.addLog(dbRes.result.gallId, dbRes.result.articleNo, checkEntries, includeEntries, excludeEntries, numOfEntries, winners);
+        const logDbRes = await drawModel.addLog(dbRes.result.gallId, dbRes.result.articleNo, dbRes.result.isMini, checkEntries, includeEntries, excludeEntries, numOfEntries, winners);
         if (!logDbRes.status) throw 'DB_ERROR';
         res.json({ status: true, result: { winners: winners, logNo: logDbRes.result.logNo } });
     } catch (e) {

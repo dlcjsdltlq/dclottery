@@ -25,6 +25,8 @@
             <div class="ui segment horizontal-align">
                 <h3>갤러리 ID: </h3>
                 <span class="info-text" id="gall-id"></span>
+                <!--span class="info-text" id="is-mini" style="color: red; display: none;">ⓜ</span-->
+                <div class="mini-icon-big" id="is-mini" style="display: none;"></div>
             </div>
             <div class="ui segment horizontal-align">
                 <h3>글 번호: </h3>
@@ -60,6 +62,7 @@
         qs('#article-no').textContent = res.articleNo;
         qs('#log-no').textContent = res.logNo;
         qs('#num-of-entries').textContent = res.numOfEntries;
+        qs('#is-mini').style.display = res.isMini && 'inline-block';
         const createLabel = (color, text, detail) => {
             const element = document.createElement('div');
             element.classList.add('ui', 'label', 'huge', 'result-label', color);

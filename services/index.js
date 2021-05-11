@@ -2,7 +2,7 @@ const request = require("request");
 const cheerio = require("cheerio");
 const utils = require("../utils");
 
-const getComment = async (gallId, articleNo) => {
+const getComment = async (gallId, articleNo, isMini) => {
     const articleURL = `https://gall.dcinside.com/board/view/?id=${gallId}&no=${articleNo}&_rk=&page=1`;
     const userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36";
     const getTokenOptions = {
@@ -16,7 +16,7 @@ const getComment = async (gallId, articleNo) => {
     let $ = cheerio.load(body);
     let e_s_n_o = $("#e_s_n_o").attr("value");
     if (!e_s_n_o) {
-        getTokenOptions.uri = `https://gall.dcinside.com/mgallery/board/view/?id=${gallId}&no=${articleNo}&_rk=&page=1`
+        getTokenOptions.uri = `https://gall.dcinside.com/${isMini ? 'mini' : 'mgallery'}/board/view/?id=${gallId}&no=${articleNo}&_rk=&page=1`
         body = await new Promise((resolve, reject) => request.get(getTokenOptions, (error, response, body) => {resolve(body)}));
         $ = cheerio.load(body);
         e_s_n_o = $("#e_s_n_o").attr("value");
@@ -36,7 +36,8 @@ const getComment = async (gallId, articleNo) => {
             cmt_id: gallId,
             cmt_no: articleNo,
             e_s_n_o: e_s_n_o,
-            comment_page: 1
+            comment_page: 1,
+            _GALLTYPE_: isMini && 'MI'
         },
         json: true
     };
@@ -74,7 +75,7 @@ const parseURL = (url) => {
         id = url.match(mIdPattern)[0].replace('/board/', '');
         no = url.match(mNoPattern)[0].replace('/', '');
     }
-    return { id: id, no: no };
+    return { id: id, no: no, isMini: url.includes('mini') };
 };
 
 module.exports = {

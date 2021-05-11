@@ -11,6 +11,7 @@ db.once('open', () => {
 const drawSchema = new mongoose.Schema({
     gallId: String,
     articleNo: String,
+    isMini: Boolean,
     entries: Array,
     comments: String,
     createDate: {
@@ -29,6 +30,7 @@ const logSchema = new mongoose.Schema({
     logNo: Number,
     gallId: String,
     articleNo: String,
+    isMini: Boolean,
     entries: Array,
     includeEntries: Array,
     excludeEntries: Array,
@@ -52,10 +54,11 @@ const DrawModel = mongoose.model('DrawModel', drawSchema);
 const RecentWinnersModel = mongoose.model('RecentWinnersModel', recentWinnerSchema);
 const LogModel = mongoose.model('LogModel', logSchema);
 
-const addDrawData = async (gallId, articleNo, entries, comments) => {
+const addDrawData = async (gallId, articleNo, isMini, entries, comments) => {
     const drawInstance = new DrawModel({
         gallId: gallId,
         articleNo: articleNo,
+        isMini: isMini,
         entries: entries,
         comments: JSON.stringify(comments)
     });
@@ -116,11 +119,12 @@ const getRecentWinner = async () => {
     }
 };
 
-const addLog = async (gallId, articleNo, entries, includeEntries, excludeEntries, numOfEntries, winners) => {
+const addLog = async (gallId, articleNo, isMini, entries, includeEntries, excludeEntries, numOfEntries, winners) => {
     try {
         const logInstance = new LogModel({
             gallId: gallId,
             articleNo: articleNo,
+            isMini: isMini,
             entries: entries,
             includeEntries: includeEntries,
             excludeEntries: excludeEntries,
