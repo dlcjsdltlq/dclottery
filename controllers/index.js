@@ -96,6 +96,15 @@ const renderLogPage = async (req, res) => {
     }
 };
 
+const renderServiceClosePage = async (req, res) => {
+    try {
+        res.render('service-closing');
+    } catch (e) {
+        let resError = ERROR_LIST.includes(e) ? e : 'ERROR_ELSE'; 
+        res.render('view-detailed-log', { status: false, result: resError });
+    }
+};
+
 const getLastLogNo = async (req, res) => {
     try {
         const dbRes = await drawModel.getLastLogNo();
@@ -132,6 +141,7 @@ module.exports = {
     getLogList,
     renderLogPage,
     renderResultPage,
+    renderServiceClosePage,
     getLastLogNo,
     getScreenShot
 };

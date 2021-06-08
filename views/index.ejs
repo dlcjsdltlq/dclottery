@@ -13,6 +13,16 @@
     <meta charset="utf-8">
     <title>DC추첨기</title>
     <meta id="call-id" data-token="">
+    <!--서비스 운영 종료 안내
+
+    안녕하세요. dclottery 운영자입니다.
+    저희 서비스는 이용자 수 저조로 인해 6월 30일까지 운영 후 서비스를 종료할 계획입니다.
+    본 도메인의 만료일이 다가오고 있고, 매달 지출하는 서버 운영비도 상당한 부담인 상황입니다.
+    약 5000개에 달하는 로그 기록은 다른 방법을 통해 추후 계속 공개하도록 하겠습니다. 
+    GitHub에 서비스의 소스 코드를 공개했으니 운영을 원하시는 분은 저에게 먼저 연락해주신 후 새로 운영하셔도 됩니다.
+    
+    지금까지 본 서비스를 이용해 주신 모든 분들께 감사의 말씀을 전합니다.
+    -->
 </head>
 
 <body>
@@ -31,6 +41,7 @@
             <button class="ui button" onclick="viewRecentWinner();">최근 당첨자 보기</button>
             <button class="ui button" onclick="viewOptionBox();">옵션</button>
         </div>
+        <a id="service-closing-notice" href="/service_close" target="_blank"><i class="exclamation triangle icon"></i>서비스 운영 종료 안내(~6.30)</a>
         <div class="ui segment" id="option-segment" style="display: none;">
             <h2>옵션 설정</h2>
             <div class="ui divider"></div>
